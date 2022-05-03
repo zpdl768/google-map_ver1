@@ -33,10 +33,22 @@ class _HomeState extends State<Home> {
             polylines: polylines,
             circles: circles,
             polygons: polygons,
-            //markers: markers,
+            markers: markers,
             initialCameraPosition: initPosition,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
+            },
+            onTap: (LatLng latLng) async {
+              final GoogleMapController controller = await _controller.future;
+
+              setState(() {
+                markers.add(Marker(
+                  markerId: MarkerId(latLng.toString()),
+                  position: latLng,
+                  infoWindow: InfoWindow(title: "${latLng.latitude}/${latLng.longitude}"),
+                ));
+                controller.animateCamera(CameraUpdate.newLatLng(latLng));
+              });
             },
           ),
           Positioned(
