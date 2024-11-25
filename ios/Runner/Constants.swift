@@ -7,4 +7,4 @@
 
 import Foundation
 
-let googleApiKey = "INSERT YOUR API KEY HERE"
+let googleApiKey = "AIzaSyA9XAvBS31vr82eRMgEBau-hp6suUw6c9Q"

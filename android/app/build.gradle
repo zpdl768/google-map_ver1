@@ -1,3 +1,5 @@
+import org.gradle.api.GradleException
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -26,11 +28,24 @@ if (googleApiKey == null) {
     throw new GradleException("Google Api Key not found. Define location with google.api.key in the local.properties file.")
 }
 
+// Gradle 플러그인 설정
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Android Gradle Plugin 최신 버전 적용
+        classpath 'com.android.tools.build:gradle:8.1.0'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    // Flutter SDK의 compileSdkVersion 사용
     compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {
@@ -48,7 +63,7 @@ android {
 
     defaultConfig {
         applicationId "kr.co.kkensu.flutter_google_map_sample"
-        minSdkVersion 20
+        minSdkVersion 20 // 프로젝트의 최소 지원 SDK
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -60,8 +75,7 @@ android {
         }
 
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // 서명 구성 유지
             signingConfig signingConfigs.debug
             manifestPlaceholders = [googleApiKey: googleApiKey]
         }
